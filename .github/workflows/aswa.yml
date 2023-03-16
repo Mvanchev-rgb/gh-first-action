@@ -45,7 +45,16 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-app
-
+          
+      - name: Login to Azure
+        id: azure-login
+        uses: azure/CLI@v1
+          with:
+            inlineScript: |
+              az login -u ${{ secrets.AZURE_USERNAME }} -p ${{ secrets.AZURE_PASSWORD }}
+              az account set --subsrption Non-Production
+              az account show 
+              
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
